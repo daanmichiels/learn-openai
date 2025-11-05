@@ -33,7 +33,7 @@ tools = [
 
 conversation = [
     {'role': 'system', 'content': 'You are a helpful agent.'},
-    {'role': 'user', 'content': 'Run the commands "foo" and "bar".'},
+    {'role': 'user', 'content': 'Run the commands "foo" and "bar". If they work, explain the result. If they don\'t, try to explain why not.'},
 ]
 
 counter = 0
@@ -43,9 +43,12 @@ while True:
     print('===================================================')
     response = client.responses.create(
       model="gpt-5-nano",
-      reasoning={'effort': 'medium'},
+      reasoning={
+          'effort': 'low',
+      },
       input=conversation,
-      store=True,
+      include=['reasoning.encrypted_content'],
+      store=False,
       tools=tools,
       parallel_tool_calls=True,
     )
